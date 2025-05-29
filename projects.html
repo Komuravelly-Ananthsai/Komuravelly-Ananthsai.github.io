@@ -1,0 +1,194 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAS | Projects</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html"><span class="dot"></span>
+                    <pre>Ananth Sai</pre>
+                </a>
+            </div>
+            <nav>
+                <button class="mobile-menu-btn">☰</button>
+                <ul>
+                    <li><a href="index.html"><span>Home</span></a></li>
+                    <li><a href="resume.html"><span>Resume</span></a></li>
+                    <li><a href="projects.html"><span class="active">Projects</span></a></li>
+                    <li><a href="certifications.html"><span>Certifications</span></a></li>
+                    <li><a href="extracurriculars.html"><span>Extra Curriculars</span></a></li>
+                    <li><a href="recommendations.html"><span>Recommendations</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content Section -->
+    <main class="container">
+        <!-- Projects Section -->
+        <section id="projects">
+            <h2 class="section-title">Projects</h2>
+            <p class="section-description">
+                This section highlights my work, projects, and the experience I have gained throughout my three-year undergraduate degree. It reflects my dedication, creativity, and professional growth.
+            </p>
+            
+            <div class="certifications-list">
+                <!-- Project 01 -->
+                <div class="certification-card">
+                    <div class="certification-image">
+                        <img src="https://cdn.glitch.global/35d22286-0ac6-400e-9a45-d84c71b7c291/capstone.jpg?v=1748463257523" alt="Capstone Project">
+                    </div>
+                    <div class="project-content">
+                        <h3>Capstone Project</h3>
+                        <p>
+                            This project explores the adoption of advanced digital tools in mental health care-like AI companions, VR therapy, and
+                            gamified CBT —to identify challenges and opportunities for Avika in developing integrated, tech-driven therapeutic solutions.                        </p>
+                    </div>
+                </div>
+
+                <div class="certification-card">
+                    <div class="certification-image">
+                        <img src="https://cdn.glitch.global/35d22286-0ac6-400e-9a45-d84c71b7c291/apple_logo.jpeg?v=1748482461192"
+                            alt="Capstone Project">
+                    </div>
+                    <div class="project-content">
+                        <h3>Strategic Recommendations to Enhance Battery Performance for Apple Inc
+                        </h3>
+                        <p>
+                            This project analyzes and addresses the challenges Apple Inc. faces with the
+                            battery performance of its iOS devices. The objective is to recommend strategic actions that Apple can take to improve
+                            user satisfaction and maintain its competitive advantage in the tech industry. </p>
+                    </div>
+                </div>
+                
+                <div class="certification-card">
+                    <div class="certification-image">
+                        <img src="https://cdn.glitch.global/35d22286-0ac6-400e-9a45-d84c71b7c291/supply-chain-optimization.jpg?v=1748489033868"
+                            alt="Capstone Project">
+                    </div>
+                    <div class="project-content">
+                        <h3>Optimizing Supply Chain Strategies for Operational Efficiency
+                        </h3>
+                        <p>
+                            This project analyzes and enhances supply chain processes with a focus on improving efficiency, cost-effectiveness, and
+                            responsiveness. The goal is to develop strategic recommendations that streamline logistics, inventory management, and
+                            supplier coordination. </p>
+                    </div>
+                </div>
+
+                <div class="certification-card">
+                    <div class="certification-image">
+                        <img src="https://cdn.glitch.global/35d22286-0ac6-400e-9a45-d84c71b7c291/Original%2BLogo.png?v=17484890510872"
+                            alt="Capstone Project">
+                    </div>
+                    <div class="project-content">
+                        <h3>Smart Stacks: Building a Secure and Scalable PayTech Platform
+                        </h3>
+                        <p>
+                            This project focuses on the conceptualization and strategic design of Smart Stacks, a digital wallet and PayTech
+                            solution offering users seamless, secure, and flexible financial services. The platform aims to integrate payments, fund
+                            transfers, and financial tools through a unified app, driven by user-centric design, advanced technology, and
+                            risk-managed operations. </p>
+                    </div>
+                </div>
+
+                <div class="certification-card">
+                    <div class="certification-image">
+                        <img src="https://cdn.glitch.global/35d22286-0ac6-400e-9a45-d84c71b7c291/pro1.jpg?v=1748461947805"
+                            alt="IOT Project">
+                    </div>
+                    <div class="project-content">
+                        <h3>IOT Project</h3>
+                        <p>
+                            This project focuses on integrating Internet of Things (IoT) technology with smart wearables to revolutionize athletic
+                            performance tracking and optimization. It aims to enhance how athletes train, recover, and compete by leveraging
+                            real-time data analytics from wearable devices. These innovations will not only provide personalized feedback to
+                            athletes and coaches but also open avenues for injury prevention, efficiency improvement, and performance benchmarking. </p>
+                    </div>
+                </div>
+                
+                
+                
+                
+            </div>
+        </section>
+    </main>
+    
+    
+     <!-- Footer Section -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-contact">
+                <a href="tel:+919652005447" class="contact-item" aria-label="Call +91-9652005447">
+                    <i class="bi bi-phone" style="color: black;"></i>
+                    <span class="contact-text">+91-9652005447</span>
+                </a>
+                <a href="mailto:Ananthsai09@gmail.com" class="contact-item" aria-label="Email Ananthsai09@gmail.com">
+                    <i class="bi bi-envelope" style="color: black;"></i>
+                    <span class="contact-text">Ananthsai09@gmail.com</span>
+                </a>
+            </div>
+            <div class="footer-social">
+                <a href="https://linkedin.com" class="social-link" aria-label="LinkedIn" ><i class="bi bi-linkedin" style="color: black;"></i>
+                </a>
+                <a href="https://instagram.com" class="social-link" aria-label="Istagram"><i class="bi bi-instagram" style="color: black;"></i>                </a>
+                <a href="https://twitter.com" class="social-link" aria-label="Twitter"><i class="bi bi-twitter" style="color: black;"></i>
+                </i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Komuravelly Ananth Sai. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="scripts.js"></script>
+</body>
+</html>
